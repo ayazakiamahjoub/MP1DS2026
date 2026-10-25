@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         body { font-family: Arial; text-align: center; margin-top: 50px; }
-        #resultat { font-size: 24px; font-weight: bold; color: red; margin-top: 20px; }
+        #resultat { font-size: 24px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -18,8 +18,8 @@
     <div id="resultat">Chargement du fichier...</div>
 
     <script>
-        // On indique le nom exact de votre fichier uploadé sur GitHub
-        const nomFichier = "Consommation-STEG-DenDen02.xlsx";
+        // ⚠️ ICI ON MET LE LIEN DIRECT VERS VOTRE FICHIER EXCEL ⚠️
+        const nomFichier = "https://raw.githubusercontent.com/ayazakiamahjoub/MP1DS2026/main/Consommation-STEG-DenDen02.xlsx";
 
         // On télécharge le fichier, puis on le lit
         fetch(nomFichier)
@@ -29,7 +29,7 @@
                 const workbook = XLSX.read(data, { type: 'array' });
                 const feuille = workbook.Sheets[workbook.SheetNames[0]];
                 
-                // On cherche la ligne "Fraude" (ligne 17 dans votre fichier)
+                // On cherche la ligne "Fraude"
                 const donnees = XLSX.utils.sheet_to_json(feuille, { header: 1 });
                 
                 // On cherche la ligne qui contient le mot "Fraude"
@@ -42,13 +42,13 @@
                     // On affiche le résultat
                     document.getElementById('resultat').innerHTML = 
                         `Fraude Juillet : <span style="color:black">${fraudeJuillet}</span> kWh<br>` +
-                        `Fraude Août : <span style="color:red">${fraudeAout}</span> kWh`;
+                        `Fraude Août : <span style="color:red; font-size: 30px;">${fraudeAout}</span> kWh`;
                 } else {
                     document.getElementById('resultat').innerText = "Ligne Fraude non trouvée.";
                 }
             })
             .catch(error => {
-                document.getElementById('resultat').innerText = "Erreur : Fichier introuvable. Vérifiez le nom du fichier.";
+                document.getElementById('resultat').innerText = "Erreur : Impossible de lire le fichier.";
                 console.error(error);
             });
     </script>
