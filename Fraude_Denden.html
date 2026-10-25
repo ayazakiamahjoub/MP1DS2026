@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calcul Fraude depuis Excel</title>
+    <!-- On charge la librairie pour lire les fichiers Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        #resultat { font-size: 24px; font-weight: bold; color: red; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>Calcul de la Fraude (lecture directe du fichier Excel)</h2>
+    
+    <!-- Zone d'affichage du résultat -->
+    <div id="resultat">Chargement du fichier...</div>
+
+    <script>
+        // On indique le nom exact de votre fichier uploadé sur GitHub
+        const nomFichier = "Consommation-STEG-DenDen02.xlsx";
+
+        // On télécharge le fichier, puis on le lit
+        fetch(nomFichier)
+            .then(response => response.arrayBuffer())
+            .then(data => {
+                // Lecture du fichier Excel
+                const workbook = XLSX.read(data, { type: 'array' });
+                const feuille = workbook.Sheets[workbook.SheetNames[0]];
+                
+                // On cherche la ligne "Fraude" (ligne 17 dans votre fichier)
+                const donnees = XLSX.utils.sheet_to_json(feuille, { header: 1 });
+                
+                // On cherche la ligne qui contient le mot "Fraude"
+                let ligneFraude = donnees.find(ligne => ligne[0] === "Fraude");
+
+                if (ligneFraude) {
+                    const fraudeJuillet = ligneFraude[1];
+                    const fraudeAout = ligneFraude[2];
+                    
+                    // On affiche le résultat
+                    document.getElementById('resultat').innerHTML = 
+                        `Fraude Juillet : <span style="color:black">${fraudeJuillet}</span> kWh<br>` +
+                        `Fraude Août : <span style="color:red">${fraudeAout}</span> kWh`;
+                } else {
+                    document.getElementById('resultat').innerText = "Ligne Fraude non trouvée.";
+                }
+            })
+            .catch(error => {
+                document.getElementById('resultat').innerText = "Erreur : Fichier introuvable. Vérifiez le nom du fichier.";
+                console.error(error);
+            });
+    </script>
+
+</body>
+</html>
