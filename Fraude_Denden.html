@@ -2,56 +2,47 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Calcul Fraude depuis Excel</title>
-    <!-- On charge la librairie pour lire les fichiers Excel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>Fraude DenDen</title>
     <style>
-        body { font-family: Arial; text-align: center; margin-top: 50px; }
-        #resultat { font-size: 24px; font-weight: bold; margin-top: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .fraude {
+            font-size: 60px;
+            color: red;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .text {
+            font-size: 18px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
 
-    <h2>Calcul de la Fraude (lecture directe du fichier Excel)</h2>
-    
-    <!-- Zone d'affichage du résultat -->
-    <div id="resultat">Chargement du fichier...</div>
-
-    <script>
-        // ⚠️ ICI ON MET LE LIEN DIRECT VERS VOTRE FICHIER EXCEL ⚠️
-        const nomFichier = "https://raw.githubusercontent.com/ayazakiamahjoub/MP1DS2026/main/Consommation-STEG-DenDen02.xlsx";
-
-        // On télécharge le fichier, puis on le lit
-        fetch(nomFichier)
-            .then(response => response.arrayBuffer())
-            .then(data => {
-                // Lecture du fichier Excel
-                const workbook = XLSX.read(data, { type: 'array' });
-                const feuille = workbook.Sheets[workbook.SheetNames[0]];
-                
-                // On cherche la ligne "Fraude"
-                const donnees = XLSX.utils.sheet_to_json(feuille, { header: 1 });
-                
-                // On cherche la ligne qui contient le mot "Fraude"
-                let ligneFraude = donnees.find(ligne => ligne[0] === "Fraude");
-
-                if (ligneFraude) {
-                    const fraudeJuillet = ligneFraude[1];
-                    const fraudeAout = ligneFraude[2];
-                    
-                    // On affiche le résultat
-                    document.getElementById('resultat').innerHTML = 
-                        `Fraude Juillet : <span style="color:black">${fraudeJuillet}</span> kWh<br>` +
-                        `Fraude Août : <span style="color:red; font-size: 30px;">${fraudeAout}</span> kWh`;
-                } else {
-                    document.getElementById('resultat').innerText = "Ligne Fraude non trouvée.";
-                }
-            })
-            .catch(error => {
-                document.getElementById('resultat').innerText = "Erreur : Impossible de lire le fichier.";
-                console.error(error);
-            });
-    </script>
+    <div class="container">
+        <h1>Analyse de Fraude - Zone DenDen</h1>
+        <div class="text">Écart de consommation constaté au mois d'Août :</div>
+        
+        <!-- C'est ici qu'on affiche le résultat -->
+        <div class="fraude">100 kWh</div>
+        
+        <div class="text">(Compteur : 2000 kWh - Facturé : 1900 kWh)</div>
+    </div>
 
 </body>
 </html>
